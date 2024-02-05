@@ -20,4 +20,8 @@ router.post('/ocr', upload.single('file'), async (req, res) => {
 
 });
 
+router.get('/hello', (req, res) => {
+    res.json({ message: 'Hello, friend!' });
+});
+
 module.exports = router;
