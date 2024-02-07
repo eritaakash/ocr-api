@@ -4,6 +4,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+const cors = require('cors');
+app.use(cors());
+
 const fs = require('fs');
 const apiDir = fs.readdirSync('./api');
 
