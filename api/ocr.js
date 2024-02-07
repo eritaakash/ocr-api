@@ -9,6 +9,8 @@ const languages = require('../languages');
 
 router.post('/ocr', upload.single('file'), async (req, res) => {
 
+    console.log(req.file);
+
     const buffer = req.file.buffer;
     const image = Buffer.from(buffer);
 
