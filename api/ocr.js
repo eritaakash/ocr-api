@@ -19,71 +19,71 @@ router.post('/ocr', upload.single('file'), async (req, res) => {
     res.json({ text });
 });
 
-const fs = require('fs');
-const path = require('path');
+// const fs = require('fs');
+// const path = require('path');
 
-const pdfPoppler = require('pdf-poppler');
+// const pdfPoppler = require('pdf-poppler');
 
-router.post('/pdf', upload.single('file'), async (req, res) => {
+// router.post('/pdf', upload.single('file'), async (req, res) => {
 
-    const pdfFilePath = path.join(__dirname, '../public/uploads', `${Date.now()}.pdf`);
-    const outputPath = path.join(__dirname, '../public/pages/' + req.query.id);
+//     const pdfFilePath = path.join(__dirname, '../public/uploads', `${Date.now()}.pdf`);
+//     const outputPath = path.join(__dirname, '../public/pages/' + req.query.id);
     
-    try {
-        if (!req.file) {
-            return res.status(400).json({ error: 'No file uploaded' });
-        }
+//     try {
+//         if (!req.file) {
+//             return res.status(400).json({ error: 'No file uploaded' });
+//         }
 
-        const pdfBuffer = req.file.buffer;
+//         const pdfBuffer = req.file.buffer;
 
-        const outputPrefix = 'page'; // Prefix for output image files
-        const outputFormat = 'jpeg'; // Output image format
+//         const outputPrefix = 'page'; // Prefix for output image files
+//         const outputFormat = 'jpeg'; // Output image format
 
-        // Write the PDF buffer to a temporary file
-        fs.writeFileSync(pdfFilePath, pdfBuffer);
-        fs.mkdirSync(outputPath);
+//         // Write the PDF buffer to a temporary file
+//         fs.writeFileSync(pdfFilePath, pdfBuffer);
+//         fs.mkdirSync(outputPath);
 
-        const options = {
-            format: outputFormat,
-            out_dir: outputPath,
-            out_prefix: outputPrefix,
-            page: null,
-        };
+//         const options = {
+//             format: outputFormat,
+//             out_dir: outputPath,
+//             out_prefix: outputPrefix,
+//             page: null,
+//         };
 
-        // Convert PDF file to images
-        const images = await pdfPoppler.convert(pdfFilePath, options);
-        console.log('Images converted successfully:', images);
+//         // Convert PDF file to images
+//         const images = await pdfPoppler.convert(pdfFilePath, options);
+//         console.log('Images converted successfully:', images);
 
-        const imgBuffers = [];
-        const imagesPath = path.join(__dirname, '../public/pages/' + req.query.id);
-        const imagesDir = fs.readdirSync(imagesPath);
+//         const imgBuffers = [];
+//         const imagesPath = path.join(__dirname, '../public/pages/' + req.query.id);
+//         const imagesDir = fs.readdirSync(imagesPath);
 
-        for (const imgfile of imagesDir) {
-            const img = fs.readFileSync(path.join(imagesPath, imgfile));
-            imgBuffers.push(img);
-        }
+//         for (const imgfile of imagesDir) {
+//             const img = fs.readFileSync(path.join(imagesPath, imgfile));
+//             imgBuffers.push(img);
+//         }
 
-        console.log('Images:', imgBuffers);
-        res.status(200).json({ images: imgBuffers });
+//         console.log('Images:', imgBuffers);
+//         res.status(200).json({ images: imgBuffers });
 
-    } catch (error) {
-        console.error('Error converting PDF to images:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    } finally {
-        fs.unlinkSync(pdfFilePath);
+//     } catch (error) {
+//         console.error('Error converting PDF to images:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     } finally {
+//         fs.unlinkSync(pdfFilePath);
 
-        const output = fs.readdirSync(outputPath);
+//         const output = fs.readdirSync(outputPath);
 
-        for (const file of output) {
-            fs.unlinkSync(path.join(outputPath, file));
-        };
+//         for (const file of output) {
+//             fs.unlinkSync(path.join(outputPath, file));
+//         };
 
-        fs.rmdirSync(outputPath);
-    }
-});
+//         fs.rmdirSync(outputPath);
+//     }
+// });
 
-router.post('/hello', (req, res) => {
-    res.json({ message: 'Hello, friend!' });
-});
+// router.post('/hello', (req, res) => {
+//     res.json({ message: 'Hello, friend!' });
+// });
 
 module.exports = router;
